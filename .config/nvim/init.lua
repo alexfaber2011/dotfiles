@@ -282,6 +282,10 @@ vim.cmd([[
 command! -range GBrowse CocCommand git.browserOpen
 command! -nargs=* Git CocCommand git.<args>
 command! -range Gblame CocCommand git.showBlameDoc
+
+" Git hunk navigation
+nmap [c <Plug>(coc-git-prevchunk)
+nmap ]c <Plug>(coc-git-nextchunk)
 ]])
 
 -- Pmenu highlight

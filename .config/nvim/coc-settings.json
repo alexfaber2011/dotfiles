@@ -1,4 +1,6 @@
 {
+  "typescript.format.enable": false,
+  "eslint.autoFixOnSave": false,
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
