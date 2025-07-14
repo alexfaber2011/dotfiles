@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@yaegassy/coc-tailwindcss3": ">=0.5.7",
+    "coc-prettier": ">=11.0.0"
+  },
+  "lastUpdate": 1741708679367
+}
