@@ -27,8 +27,9 @@
   | source && fisher install jorgebucaran/fisher`
 - [tide](https://github.com/IlanCosman/tide)
   - install with `fisher install IlanCosman/tide@v6`
-  - configure with `tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icon
-s='Many icons' --transient=Yes`
+  - configure with `tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Dotted --prompt_connection_andor_frame_color
+=Darkest --prompt_spacing=Sparse --icons='Few icons' --transient=Yes
+`
 - [neovim](https://neovim.io/)
   - install with `brew install neovim`
 
