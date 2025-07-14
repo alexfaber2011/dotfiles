@@ -16,14 +16,10 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- Coc nvim for language support
   { "neoclide/coc.nvim", branch = "release" },
-  { "neoclide/coc-tsserver", build = "yarn install --frozen-lockfile" },
-  { "neoclide/coc-eslint", build = "yarn install --frozen-lockfile" },
-  { "neoclide/coc-prettier", build = "yarn install --frozen-lockfile" },
 
   -- UI enhancements
   "itchyny/lightline.vim",
   "airblade/vim-gitgutter",
-  "tpope/vim-fugitive",
 
   -- Fuzzy finder
   { "junegunn/fzf", build = function() vim.fn["fzf#install"]() end },
@@ -35,8 +31,6 @@ require("lazy").setup({
   "NLKNguyen/papercolor-theme",
   "tpope/vim-surround",
   "nelstrom/vim-visual-star-search",
-  "tpope/vim-rhubarb",
-  "github/copilot.vim",
 
   -- Arduino
   "bergercookie/vim-debugstring",
@@ -74,7 +68,6 @@ require("lazy").setup({
   "hrsh7th/nvim-cmp",
   "nvim-tree/nvim-web-devicons",
   "HakonHarnes/img-clip.nvim",
-  "zbirenbaum/copilot.lua",
 
   -- Avante
 --{
@@ -87,13 +80,27 @@ require("lazy").setup({
 --  end
 --},
   {
-  "olimorris/codecompanion.nvim",
-  opts = {},
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "nvim-treesitter/nvim-treesitter",
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp", -- Optional
+      "nvim-tree/nvim-web-devicons", -- Optional
+      "HakonHarnes/img-clip.nvim", -- Optional
+    },
+    config = function()
+      require("codecompanion").setup({
+        strategies = {
+          chat = {
+            adapter = "anthropic",
+          },
+          inline = {
+            adapter = "anthropic",
+          },
+        },
+      })
+    end,
   },
-},
 })
 
 -- Configure Neovim's settings
@@ -267,8 +274,15 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
--- Vim-fugitive configuration
+-- Git configuration  
 vim.opt.diffopt:append("vertical")
+
+-- Git commands via coc-git
+vim.cmd([[
+command! -range GBrowse CocCommand git.browserOpen
+command! -nargs=* Git CocCommand git.<args>
+command! -range Gblame CocCommand git.showBlameDoc
+]])
 
 -- Pmenu highlight
 vim.cmd("highlight Pmenu ctermbg=black ctermfg=white")
@@ -294,6 +308,13 @@ vim.opt.showmode = false
 vim.cmd([[nmap <script> <leader>cob :<C-U>set background=<C-R>=&background == "dark" ? "light" : "dark"<CR><CR>]])
 
 -- COC configuration
+vim.g.coc_global_extensions = {
+  'coc-tsserver',
+  'coc-json', 
+  'coc-eslint',
+  'coc-prettier',
+  'coc-git'
+}
 vim.g.coc_node_path = vim.fn.trim(vim.fn.system('which node'))
 vim.g.coc_enable_debug = 1
 vim.cmd([[inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"]])
@@ -309,17 +330,10 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
--- Code companion configuration
-require("codecompanion").setup({
-  strategies = {
-    chat = {
-      adapter = "anthropic",
-    },
-    inline = {
-      adapter = "anthropic",
-    },
-  },
-})
+-- Ensure markdown treesitter parsers are installed
+vim.cmd([[
+  autocmd VimEnter * TSInstall! markdown markdown_inline
+]])
 
 -- FZF configuration
 vim.cmd([[nnoremap <leader><leader> :Files<CR>]])
