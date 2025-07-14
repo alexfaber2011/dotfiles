@@ -18,6 +18,7 @@ require("lazy").setup({
   { "neoclide/coc.nvim", branch = "release" },
   { "neoclide/coc-tsserver", build = "yarn install --frozen-lockfile" },
   { "neoclide/coc-eslint", build = "yarn install --frozen-lockfile" },
+  { "neoclide/coc-prettier", build = "yarn install --frozen-lockfile" },
 
   -- UI enhancements
   "itchyny/lightline.vim",
@@ -36,7 +37,6 @@ require("lazy").setup({
   "nelstrom/vim-visual-star-search",
   "tpope/vim-rhubarb",
   "github/copilot.vim",
-  "vim-pandoc/vim-pandoc-syntax",
 
   -- Arduino
   "bergercookie/vim-debugstring",
@@ -47,17 +47,6 @@ require("lazy").setup({
   "stevearc/dressing.nvim",
   "nvim-lua/plenary.nvim",
   "MunifTanjim/nui.nvim",
-  -- "MeanderingProgrammer/render-markdown.nvim",
-  {
-    "OXY2DEV/markview.nvim",
-    lazy = false,
-    opts = {
-      preview = {
-        filetypes = { "codecompanion" },
-        ignore_buftypes = {},
-      },
-    },
-  },
   {
     "echasnovski/mini.diff",
     config = function()
