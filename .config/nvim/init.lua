@@ -351,15 +351,26 @@ vim.cmd([[cab cc CodeCompanion]])
 
 -- Function to get visual selection with filename and line numbers
 local function get_visual_selection_with_path()
-    -- Get the start and end line numbers of visual selection
-    local start_line = vim.fn.line("'<")
-    local end_line = vim.fn.line("'>")
+    -- Get the actual visual selection marks (more reliable)
+    local vstart = vim.fn.getpos("v")
+    local vend = vim.fn.getpos(".")
+    
+    -- Extract line numbers
+    local start_line = math.min(vstart[2], vend[2])
+    local end_line = math.max(vstart[2], vend[2])
     
     -- Get the current file path relative to working directory
     local filepath = vim.fn.expand('%')
     
     -- Format the output
-    local output = filepath .. ':' .. start_line .. '-' .. end_line
+    local output
+    if start_line == end_line then
+        -- Single line selection
+        output = filepath .. ':' .. start_line
+    else
+        -- Multi-line selection
+        output = filepath .. ':' .. start_line .. '-' .. end_line
+    end
     
     -- Copy to system clipboard
     vim.fn.setreg('+', output)
@@ -369,4 +380,7 @@ local function get_visual_selection_with_path()
 end
 
 -- Create the keymap for visual mode
-vim.keymap.set('v', '<leader>fp', get_visual_selection_with_path, { desc = 'Copy file path with line numbers' })
+vim.keymap.set('v', '<leader>fp', function()
+    -- Execute the function while still in visual mode
+    get_visual_selection_with_path()
+end, { desc = 'Copy file path with line numbers' })
