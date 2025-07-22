@@ -348,3 +348,25 @@ vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, si
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
+
+-- Function to get visual selection with filename and line numbers
+local function get_visual_selection_with_path()
+    -- Get the start and end line numbers of visual selection
+    local start_line = vim.fn.line("'<")
+    local end_line = vim.fn.line("'>")
+    
+    -- Get the current file path relative to working directory
+    local filepath = vim.fn.expand('%')
+    
+    -- Format the output
+    local output = filepath .. ':' .. start_line .. '-' .. end_line
+    
+    -- Copy to system clipboard
+    vim.fn.setreg('+', output)
+    
+    -- Also display it
+    vim.notify(output)
+end
+
+-- Create the keymap for visual mode
+vim.keymap.set('v', '<leader>fp', get_visual_selection_with_path, { desc = 'Copy file path with line numbers' })
