@@ -323,6 +323,29 @@ vim.g.coc_node_path = vim.fn.trim(vim.fn.system('which node'))
 vim.g.coc_enable_debug = 1
 vim.cmd([[inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"]])
 
+-- Auto-install missing coc extensions on startup
+vim.api.nvim_create_autocmd("User", {
+  pattern = "CocNvimInit",
+  callback = function()
+    -- Check if coc-prettier is installed, install if missing
+    vim.schedule(function()
+      local extensions = vim.fn['CocAction']('extensionStats')
+      local prettier_installed = false
+      
+      for _, ext in ipairs(extensions) do
+        if ext.id == 'coc-prettier' then
+          prettier_installed = true
+          break
+        end
+      end
+      
+      if not prettier_installed then
+        vim.cmd('CocInstall -sync coc-prettier')
+      end
+    end)
+  end
+})
+
 -- Tab management
 vim.cmd([[nnoremap <C-w>t :tab split<CR>]])
 
