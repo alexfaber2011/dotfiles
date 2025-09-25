@@ -16,6 +16,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- Coc nvim for language support
   { "neoclide/coc.nvim", branch = "release" },
+  { "neoclide/coc-tsserver", build = "yarn install --frozen-lockfile" },
+  { "neoclide/coc-eslint", build = "yarn install --frozen-lockfile" },
 
   -- UI enhancements
   "itchyny/lightline.vim",
@@ -80,27 +82,13 @@ require("lazy").setup({
 --  end
 --},
   {
-    "olimorris/codecompanion.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "hrsh7th/nvim-cmp", -- Optional
-      "nvim-tree/nvim-web-devicons", -- Optional
-      "HakonHarnes/img-clip.nvim", -- Optional
-    },
-    config = function()
-      require("codecompanion").setup({
-        strategies = {
-          chat = {
-            adapter = "anthropic",
-          },
-          inline = {
-            adapter = "anthropic",
-          },
-        },
-      })
-    end,
+  "olimorris/codecompanion.nvim",
+  opts = {},
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
   },
+},
 })
 
 -- Configure Neovim's settings
@@ -357,10 +345,40 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
--- Ensure markdown treesitter parsers are installed
-vim.cmd([[
-  autocmd VimEnter * TSInstall! markdown markdown_inline
-]])
+-- Code companion configuration
+require("codecompanion").setup({
+  adapters = {
+    lm_studio = function()
+      return require("codecompanion.adapters").extend("openai_compatible", {
+        name = "lm_studio",
+        schema = {
+          model = {
+            default = "qwen3-next-80b",
+          },
+        },
+        env = {
+          url = "http://192.168.1.80:1234",  -- LM Studio default port
+          api_key = "lm-studio",  -- LM Studio doesn't require a real API key
+          chat_url = "/v1/chat/completions",
+        },
+      })
+    end,
+  },
+  strategies = {
+    chat = {
+      adapter = "lm_studio",
+    },
+    inline = {
+      adapter = "lm_studio",
+    },
+  },
+  opts = {
+    log_level = "DEBUG",  -- Optional: helps with troubleshooting
+    send_code = true,
+    use_default_actions = true,
+    use_default_prompts = true,
+  },
+})
 
 -- FZF configuration
 vim.cmd([[nnoremap <leader><leader> :Files<CR>]])
