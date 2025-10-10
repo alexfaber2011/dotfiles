@@ -135,18 +135,16 @@ vim.opt.colorcolumn = table.concat(vim.fn.range(81, 999), ",")
 -- Change the command height for better error viewing
 vim.opt.cmdheight = 2
 
--- Tab completion configuration
+-- CoC completion configuration
+-- Note: Tab/Shift-Tab are reserved for llm.nvim ghost text suggestions
 vim.cmd([[
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" Use <c-n> and <c-p> for navigating completion list
+inoremap <silent><expr> <C-n> pumvisible() ? "\<C-n>" : coc#refresh()
+inoremap <silent><expr> <C-p> pumvisible() ? "\<C-p>" : "\<C-p>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+" Use arrow keys for navigating completion list
+inoremap <silent><expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <silent><expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 
 " Use <c-space> for trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -348,32 +346,33 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Code companion configuration
 require("codecompanion").setup({
   adapters = {
-    lm_studio = function()
-      return require("codecompanion.adapters").extend("openai_compatible", {
-        name = "lm_studio",
+    openai = function()
+      return require("codecompanion.adapters").extend("openai", {
+        env = {
+          api_key = "lm-studio",
+        },
+        url = "http://192.168.1.80:1234/v1/chat/completions",
         schema = {
           model = {
-            default = "qwen3-next-80b",
+            default = "qwen/qwen3-next-80b",
           },
-        },
-        env = {
-          url = "http://192.168.1.80:1234",  -- LM Studio default port
-          api_key = "lm-studio",  -- LM Studio doesn't require a real API key
-          chat_url = "/v1/chat/completions",
+          temperature = {
+            default = 0.3,
+          },
         },
       })
     end,
   },
   strategies = {
     chat = {
-      adapter = "lm_studio",
+      adapter = "openai",
     },
     inline = {
-      adapter = "lm_studio",
+      adapter = "openai",
     },
   },
   opts = {
-    log_level = "DEBUG",  -- Optional: helps with troubleshooting
+    log_level = "DEBUG",
     send_code = true,
     use_default_actions = true,
     use_default_prompts = true,
@@ -386,6 +385,7 @@ vim.cmd([[nnoremap <leader><leader> :Files<CR>]])
 vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
 vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
 vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<LocalLeader>c", "<cmd>CodeCompanion<cr>", { noremap = true, silent = true })
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
