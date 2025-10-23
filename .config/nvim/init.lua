@@ -89,6 +89,37 @@ require("lazy").setup({
     "nvim-treesitter/nvim-treesitter",
   },
 },
+  -- LLM autocomplete
+  {
+    "huggingface/llm.nvim",
+    opts = {
+      backend = "openai",
+      model = "qwen/qwen3-next-80b",
+      url = "http://192.168.1.80:1234/v1/completions",
+      tokens_to_clear = { "<|endoftext|>" },
+      fim = {
+        enabled = true,
+        prefix = "<|fim_prefix|>",
+        middle = "<|fim_middle|>",
+        suffix = "<|fim_suffix|>",
+      },
+      request_body = {
+        temperature = 0.2,
+        top_p = 0.95,
+        max_tokens = 60,
+      },
+      lsp = {
+        bin_path = nil,
+        cmd_env = {
+          LLM_LOG_LEVEL = "DEBUG"
+        },
+      },
+      accept_keymap = "<Tab>",
+      dismiss_keymap = "<S-Tab>",
+      enable_suggestions_on_startup = true,
+      enable_suggestions_on_files = "*",
+    },
+  },
 })
 
 -- Configure Neovim's settings
