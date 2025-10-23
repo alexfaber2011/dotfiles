@@ -106,7 +106,7 @@ require("lazy").setup({
       request_body = {
         temperature = 0.2,
         top_p = 0.95,
-        max_tokens = 60,
+        max_tokens = 512,
       },
       lsp = {
         bin_path = nil,
