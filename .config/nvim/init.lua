@@ -170,12 +170,12 @@ vim.opt.cmdheight = 2
 -- Note: Tab/Shift-Tab are reserved for llm.nvim ghost text suggestions
 vim.cmd([[
 " Use <c-n> and <c-p> for navigating completion list
-inoremap <silent><expr> <C-n> pumvisible() ? "\<C-n>" : coc#refresh()
-inoremap <silent><expr> <C-p> pumvisible() ? "\<C-p>" : "\<C-p>"
+inoremap <silent><expr> <C-n> coc#pum#visible() ? "\<C-n>" : coc#refresh()
+inoremap <silent><expr> <C-p> coc#pum#visible() ? "\<C-p>" : "\<C-p>"
 
 " Use arrow keys for navigating completion list
-inoremap <silent><expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <silent><expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <silent><expr> <Down> coc#pum#visible() ? "\<C-n>" : "\<Down>"
+inoremap <silent><expr> <Up> coc#pum#visible() ? "\<C-p>" : "\<Up>"
 
 " Use <c-space> for trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
