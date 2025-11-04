@@ -31,6 +31,15 @@ fi
 if command -v fish &> /dev/null; then
     echo "🌊 Configuring Tide prompt..."
     fish -c "tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Dotted --prompt_connection_andor_frame_color=Darkest --prompt_spacing=Sparse --icons='Few icons' --transient=Yes"
+
+    # Add vim -> nvim alias if nvim is installed
+    if command -v nvim &> /dev/null; then
+        echo "⚙️  Adding vim -> nvim alias..."
+        mkdir -p "$HOME/.config/fish"
+        if ! grep -q "alias vim" "$HOME/.config/fish/config.fish" 2>/dev/null; then
+            echo "alias vim='nvim'" >> "$HOME/.config/fish/config.fish"
+        fi
+    fi
 fi
 
 echo "✨ Dotfiles installed successfully!"
