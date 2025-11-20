@@ -174,8 +174,8 @@ inoremap <silent><expr> <C-n> coc#pum#visible() ? "\<C-n>" : coc#refresh()
 inoremap <silent><expr> <C-p> coc#pum#visible() ? "\<C-p>" : "\<C-p>"
 
 " Use arrow keys for navigating completion list
-inoremap <silent><expr> <Down> coc#pum#visible() ? "\<C-n>" : "\<Down>"
-inoremap <silent><expr> <Up> coc#pum#visible() ? "\<C-p>" : "\<Up>"
+inoremap <silent><expr> <Down> coc#pum#visible() ? coc#pum#next(1) : "\<Down>"
+inoremap <silent><expr> <Up> coc#pum#visible() ? coc#pum#prev(1) : "\<Up>"
 
 " Use <c-space> for trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
