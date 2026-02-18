@@ -15,16 +15,12 @@ done
 # Copy .config directory and its contents
 if [[ -d ".config" ]]; then
     echo "Copying .config directory to ~/.config/"
-    shopt -s globstar
-    for file in .config/**/*; do
-        if [[ -f "$file" ]]; then
-            target_dir="$HOME/${file%/*}"
-            mkdir -p "$target_dir"
-            echo "Copying $file to $HOME/$file"
-            cp "$file" "$HOME/$file"
-        fi
-    done
-    shopt -u globstar
+    while IFS= read -r -d '' file; do
+        target_dir="$HOME/${file%/*}"
+        mkdir -p "$target_dir"
+        echo "Copying $file to $HOME/$file"
+        cp "$file" "$HOME/$file"
+    done < <(find .config -type f -print0)
 fi
 
 # Configure tide if fish is available
