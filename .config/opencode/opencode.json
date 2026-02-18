@@ -1,0 +1,65 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "read": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "glob": "allow",
+    "find": "allow",
+    "todowrite": "allow",
+    "todoedit": "allow",
+    "explore": "allow",
+    "webfetch": "allow",
+    "bash": {
+      "*": "ask",
+      "ls *": "allow",
+      "git *": "allow",
+      "rg *": "allow",
+      "grep *": "allow",
+      "rm *": "ask",
+      "sudo *": "deny",
+      "chmod *": "ask",
+      "chown *": "ask",
+      "head *": "allow",
+      "sort *": "allow",
+      "docker logs *": "allow",
+      "yarn test *": "allow",
+      "find *": "allow"
+    },
+    "edit": "ask"
+  },
+  "tools": {
+    "playwright-test_*": false
+  },
+  "agent": {
+    "playwright": {
+      "mode": "all",
+      "description": "Specialized agent for creating and running Playwright end-to-end tests",
+      "tools": {
+        "playwright-test_*": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    }
+  },
+  "provider": {
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://192.168.1.80:1234/v1"
+      },
+      "models": {
+        "qwen/qwen3-coder-next": {
+          "name": "Qwen 3 Code Next 80b",
+          "limit": {
+            "context": 64019,
+            "output": 64019
+          }
+        }
+      }
+    }
+  }
+}
