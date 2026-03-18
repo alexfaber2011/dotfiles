@@ -26,9 +26,9 @@ return {
         ensure_installed = {
           "ts_ls",
           "eslint",
-          "solargraph",
         },
         automatic_installation = true,
+        automatic_enable = { exclude = { "solargraph" } },
       })
     end,
   },
@@ -161,23 +161,18 @@ return {
         end,
       })
 
-      -- Solargraph (Ruby LSP with YARD-based type inference)
-      vim.lsp.config("solargraph", {
+      -- Ruby LSP (Shopify) — use rbenv shim so the correct Ruby version is resolved
+      vim.lsp.config("ruby_lsp", {
         capabilities = capabilities,
-        settings = {
-          solargraph = {
-            diagnostics = true,
-            completion = true,
-            hover = true,
-            references = true,
-            rename = true,
-            symbols = true,
-          },
+        cmd = { vim.fn.expand("~/.rbenv/shims/ruby-lsp") },
+        init_options = {
+          formatter = "auto",
+          linters = { "rubocop" },
         },
       })
 
       -- Enable all configured servers
-      vim.lsp.enable({ "ts_ls", "eslint", "solargraph" })
+      vim.lsp.enable({ "ts_ls", "eslint", "ruby_lsp" })
     end,
   },
 

@@ -30,6 +30,15 @@
   - configure with `tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Dotted --prompt_connection_andor_frame_color
 =Darkest --prompt_spacing=Sparse --icons='Few icons' --transient=Yes
 `
+- [rbenv](https://github.com/rbenv/rbenv)
+  - install with `brew install rbenv`
+  - initialize with `rbenv init` and follow the printed instructions
+  - install the Ruby version your project needs, e.g. `rbenv install 3.3.0`
+  - install ruby-lsp under that version so the rbenv shim is created:
+    ```bash
+    RBENV_VERSION=<version> gem install ruby-lsp
+    ```
+    The neovim LSP config expects `ruby-lsp` at `~/.rbenv/shims/ruby-lsp`.
 - [neovim](https://neovim.io/)
   - install with `brew install neovim`
 
