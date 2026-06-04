@@ -45,19 +45,19 @@
     }
   },
   "provider": {
-    "lmstudio": {
+    "omlx": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "LM Studio (local)",
+      "name": "oMLX",
       "options": {
-        "baseURL": "http://192.168.1.80:1234/v1",
-        "apiKey": "{env:LM_STUDIO_API_KEY}"
+        "baseURL": "http://127.0.0.1:8111/v1",
+        "apiKey": "{env:OMLX_API_KEY}"
       },
       "models": {
-        "qwen/qwen3-coder-next": {
-          "name": "Qwen 3 Code Next 80b",
+        "qwen3.6-mlx-mtp": {
+          "name": "Qwen 3.6",
           "limit": {
-            "context": 64019,
-            "output": 64019
+            "context": 262144,
+            "output": 131702
           }
         }
       }
