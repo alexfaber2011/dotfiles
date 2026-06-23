@@ -15,8 +15,18 @@ fi
 PROVIDER=$(jq -r '.provider | keys[0]' "$CONFIG_PATH")
 echo "Provider: $PROVIDER"
 
-# Extract baseURL
-BASE_URL=$(jq -r ".provider.\"$PROVIDER\".options.baseURL" "$CONFIG_PATH")
+# Extract baseURL, resolving a "{env:VAR}" reference if present
+BASE_URL_REF=$(jq -r ".provider.\"$PROVIDER\".options.baseURL" "$CONFIG_PATH")
+BASE_URL_ENV_VAR=$(echo "$BASE_URL_REF" | sed -n 's/^{env:\(.*\)}$/\1/p')
+if [ -n "$BASE_URL_ENV_VAR" ]; then
+  BASE_URL="${!BASE_URL_ENV_VAR:-}"
+  if [ -z "$BASE_URL" ]; then
+    echo "Error: $BASE_URL_ENV_VAR is not set"
+    exit 1
+  fi
+else
+  BASE_URL="$BASE_URL_REF"
+fi
 echo "Base URL: $BASE_URL"
 
 # Extract the env var name from apiKey (parse "{env:VAR_NAME}" format)
