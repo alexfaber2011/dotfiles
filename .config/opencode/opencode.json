@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "lsp": true,
   "permission": {
     "read": "allow",
     "grep": "allow",
@@ -13,7 +14,6 @@
     "bash": {
       "*": "ask",
       "ls *": "allow",
-      "git *": "allow",
       "rg *": "allow",
       "grep *": "allow",
       "rm *": "ask",
@@ -24,7 +24,9 @@
       "sort *": "allow",
       "docker logs *": "allow",
       "yarn test *": "allow",
-      "find *": "allow"
+      "find *": "allow",
+      "jq *": "allow",
+      "sed *": "allow"
     },
     "edit": "ask"
   },
@@ -45,21 +47,15 @@
     }
   },
   "provider": {
-    "omlx": {
+    "unsloth": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "oMLX",
+      "name": "Unsloth Studio",
       "options": {
-        "baseURL": "http://192.168.1.80:8111/v1",
-        "apiKey": "{env:OMLX_API_KEY}"
+        "baseURL": "http://192.168.1.80:8888/v1",
+        "apiKey": "{env:UNSLOTH_STUDIO_API_KEY}"
       },
       "models": {
-        "qwen3.6-mlx-mtp": {
-          "name": "Qwen 3.6",
-          "limit": {
-            "context": 262144,
-            "output": 131702
-          }
-        }
+        "Jackrong/Qwopus3.6-35B-A3B-v1-MTP-GGUF": {}
       }
     }
   }
