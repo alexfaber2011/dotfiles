@@ -25,6 +25,10 @@ fi
 
 # Configure tide if fish is available
 if command -v fish &> /dev/null; then
+    if command -v fisher &> /dev/null; then
+      fisher install IlanCosman/tide@v6
+    fi
+
     echo "🌊 Configuring Tide prompt..."
     fish -c "tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Dotted --prompt_connection_andor_frame_color=Darkest --prompt_spacing=Sparse --icons='Few icons' --transient=Yes"
 
