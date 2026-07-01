@@ -55,7 +55,8 @@
         "apiKey": "{env:UNSLOTH_STUDIO_API_KEY}"
       },
       "models": {
-        "Jackrong/Qwopus3.6-35B-A3B-v1-MTP-GGUF": {}
+        "Jackrong/Qwopus3.6-35B-A3B-v1-MTP-GGUF": {},
+        "unsloth/Qwen3.6-27B-MTP-GGUF": {}
       }
     }
   }
